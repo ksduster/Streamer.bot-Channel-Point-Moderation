@@ -1,3 +1,15 @@
+/*
+ * Streamer.bot Channel Point Moderation Script
+ * GitHub: https://github.com/ksduster/Streamer.bot-Channel-Point-Moderation
+ * Developer: Duster (ksduster)
+ *
+ * Features:
+ * - Per-user cooldown tracking for channel point redemptions
+ * - Configurable max redemptions, cooldown window, and timeout
+ * - Moderator and VIP exemptions
+ * - Two-level warning system with optional timeout
+ * - Non-persistent globals reset on Streamer.bot restart
+ */
 using System;
 using System.Collections.Generic;
 
