@@ -83,28 +83,3 @@ public class CPHInline
         return true;
     }
 }
-        // ----------------------
-        // WARNINGS & TIMEOUTS
-        // ----------------------
-        if (overLimit >= 1)
-        {
-            // First-level warning
-            CPH.SendMessage($"@{userName}, you’ve reached the channel point limit of {maxRedemptions} per {windowSeconds / 60} minutes.");
-
-            if (overLimit >= 2)
-            {
-                // Second-level: set flag and execute timeout
-                CPH.SetGlobalVar("cp_limit_exceeded_flag", false, false);
-
-                // Execute timeout
-                CPH.TwitchTimeoutUser(userName, timeoutDuration, timeoutReason, false);
-
-                // Optional log
-                CPH.LogInfo($"Timed out {userName} for {timeoutDuration} seconds: {timeoutReason}");
-            }
-        }
-
-        return true;
-    }
-}
-}
