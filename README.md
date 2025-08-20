@@ -28,8 +28,6 @@ This repository provides a customizable moderation script for Twitch Channel Poi
    * `TimeoutSeconds`: Duration of the timeout in seconds when a user exceeds the redemption limit (default: 120 seconds).
    * `TimeoutReason`: Reason displayed for the timeout (default: "Spamming Channel Redemptions").
 
-3. **Assign the Script**: In the imported action, add a sub-action to execute the `moderation.cs` script.
-
 ## 🛠️ Usage
 
 Upon setting up, the script will automatically monitor Channel Point redemptions. It will:
