@@ -5,49 +5,77 @@ public class CPHInline
 {
     public bool Execute()
     {
-        // CONFIGURATION
-        int maxRedemptions = 5;        // allowed redemptions per rolling window
-        int windowSeconds = 600;       // rolling window in seconds (10 minutes)
+        // Read arguments (with defaults if missing)
+        int maxRedemptions = args.ContainsKey("MaxRedemptions") 
+            ? Convert.ToInt32(args["MaxRedemptions"]) 
+            : 5;
 
-        // Get Twitch user info
-        string userName = args["user"].ToString();
+        int windowSeconds = args.ContainsKey("WindowSeconds") 
+            ? Convert.ToInt32(args["WindowSeconds"]) 
+            : 600;
+
+        bool checkIfMod = args.ContainsKey("CheckIfMod") 
+            ? Convert.ToBoolean(args["CheckIfMod"]) 
+            : true;
+
+        bool checkIfVip = args.ContainsKey("CheckIfVip") 
+            ? Convert.ToBoolean(args["CheckIfVip"]) 
+            : true;
+
+        // Grab Twitch user info from redemption args
         string userId = args["userId"].ToString();
+        string userName = args["user"].ToString();
 
-        // Unique key for this user's redemption history
+        var userInfo = CPH.TwitchGetExtendedUserInfoById(userId);
+        bool isModerator = userInfo.IsModerator;
+        bool isVip = userInfo.IsVip;
+
+        // Respect Mod/VIP toggles
+        if (checkIfMod && isModerator)
+        {
+            CPH.LogInfo($"Skipping cooldown for moderator {userName}");
+            return true;
+        }
+
+        if (checkIfVip && isVip)
+        {
+            CPH.LogInfo($"Skipping cooldown for VIP {userName}");
+            return true;
+        }
+
+        // Unique key per user
         string userKey = $"cp_redeems_{userId}";
 
-        // Clear temporary flag first
+        // Reset flag
         CPH.SetGlobalVar("cp_limit_exceeded_flag", true, false);
 
-        // Get user's redemption timestamps
+        // Redemption history
         var timestamps = CPH.GetGlobalVar<List<long>>(userKey, true) ?? new List<long>();
-
         long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        // Remove timestamps outside the rolling window
+        // Trim old redemptions
         timestamps.RemoveAll(t => t <= now - windowSeconds);
 
-        // Add current redemption
+        // Add this redemption
         timestamps.Add(now);
 
-        // Save updated list
+        // Save history
         CPH.SetGlobalVar(userKey, timestamps, true);
 
         int overLimit = timestamps.Count - maxRedemptions;
 
         if (overLimit >= 1)
         {
-            // Send chat warning
-            CPH.SendMessage($"@{userName} you’ve reached the channel point limit of {maxRedemptions} per {windowSeconds/60} minutes.");
+            // First level warning
+            CPH.SendMessage($"@{userName}, you’ve reached the channel point limit of {maxRedemptions} per {windowSeconds / 60} minutes.");
 
             if (overLimit >= 2)
             {
-                // Set flag for timeout logic
+                // Escalation flag
                 CPH.SetGlobalVar("cp_limit_exceeded_flag", false, false);
-                CPH.SendMessage($"@{userName}, you'll now be timed out for a few minutes.");
             }
         }
 
-        return true; // continue with other actions
+        return true;
     }
 }
