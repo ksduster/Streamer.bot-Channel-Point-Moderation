@@ -50,7 +50,7 @@ public class CPHInline
         CPH.SetGlobalVar("cp_limit_exceeded_flag", true, false);
 
         // Redemption history
-        var timestamps = CPH.GetGlobalVar<List<long>>(userKey, true) ?? new List<long>();
+        var timestamps = CPH.GetGlobalVar<List<long>>(userKey, false) ?? new List<long>();
         long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
         // Trim old redemptions
@@ -60,7 +60,7 @@ public class CPHInline
         timestamps.Add(now);
 
         // Save history
-        CPH.SetGlobalVar(userKey, timestamps, true);
+        CPH.SetGlobalVar(userKey, timestamps, false);
 
         int overLimit = timestamps.Count - maxRedemptions;
 
