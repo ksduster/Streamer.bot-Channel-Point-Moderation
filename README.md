@@ -25,8 +25,8 @@ This repository provides a customizable moderation script for Twitch Channel Poi
    * `WindowSeconds`: Time window in seconds for tracking redemptions (default: 600 seconds or 10 minutes).
    * `CheckIfMod`: Set to `true` to skip moderation for moderators (default: `true`).
    * `CheckIfVip`: Set to `true` to skip moderation for VIPs (default: `true`).
-   * `TimeoutSeconds`: Duration of the timeout in seconds when a user exceeds the redemption limit (default: 30 seconds).
-   * `TimeoutReason`: Reason displayed for the timeout (default: "Exceeded channel point redemption limit").
+   * `TimeoutSeconds`: Duration of the timeout in seconds when a user exceeds the redemption limit (default: 120 seconds).
+   * `TimeoutReason`: Reason displayed for the timeout (default: "Spamming Channel Redemptions").
 
 3. **Assign the Script**: In the imported action, add a sub-action to execute the `moderation.cs` script.
 
