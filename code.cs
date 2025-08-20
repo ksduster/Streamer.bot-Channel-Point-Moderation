@@ -44,7 +44,7 @@ public class CPHInline
             {
                 // Set flag for timeout logic
                 CPH.SetGlobalVar("cp_limit_exceeded_flag", false, false);
-                CPH.SendMessage($"@{userName} you’ve reached the channel point limit of {maxRedemptions} per {windowSeconds/60} minutes. You'll now be timed out for a few minutes.");
+                CPH.SendMessage($"@{userName}, you'll now be timed out for a few minutes.");
             }
         }
 
