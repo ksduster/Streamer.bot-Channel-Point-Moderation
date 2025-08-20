@@ -5,6 +5,8 @@ public class CPHInline
 {
     public bool Execute()
     {
+        // Reset flag
+        CPH.SetGlobalVar("cp_limit_exceeded_flag", true, false);
         // Read arguments (with defaults if missing)
         int maxRedemptions = args.ContainsKey("MaxRedemptions") ? Convert.ToInt32(args["MaxRedemptions"]) : 5;
         int windowSeconds = args.ContainsKey("WindowSeconds") ? Convert.ToInt32(args["WindowSeconds"]) : 600;
@@ -31,8 +33,7 @@ public class CPHInline
 
         // Unique key per user
         string userKey = $"cp_redeems_{userId}";
-        // Reset flag
-        CPH.SetGlobalVar("cp_limit_exceeded_flag", true, false);
+
         // Redemption history
         var timestamps = CPH.GetGlobalVar<List<long>>(userKey, false) ?? new List<long>();
         long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
