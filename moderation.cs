@@ -5,7 +5,8 @@ public class CPHInline
 {
     public bool Execute()
     {
-        // ----------------------
+       
+    // ----------------------
         // ARGUMENTS / CONFIGURATION
         // ----------------------
         int maxRedemptions = args.ContainsKey("MaxRedemptions")
@@ -42,6 +43,8 @@ public class CPHInline
         bool isModerator = userInfo.IsModerator;
         bool isVip = userInfo.IsVip;
 
+        // Reset escalation flag (non-persistent)
+        CPH.SetGlobalVar("cp_limit_exceeded_flag", true, false);
         // Skip script for Mods/VIPs if configured
         if (checkIfMod && isModerator)
         {
@@ -59,9 +62,6 @@ public class CPHInline
         // REDEMPTION TRACKING
         // ----------------------
         string userKey = $"cp_redeems_{userId}";
-
-        // Reset escalation flag (non-persistent)
-        CPH.SetGlobalVar("cp_limit_exceeded_flag", true, false);
 
         var timestamps = CPH.GetGlobalVar<List<long>>(userKey, false) ?? new List<long>();
         long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
