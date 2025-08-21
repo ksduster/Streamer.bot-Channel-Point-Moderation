@@ -17,7 +17,9 @@ This repository provides a customizable moderation script for Twitch Channel Poi
 
 ## 🔧 Installation
 
-1. **Import the Action**: Open Streamer.bot and navigate to the Actions tab. Right-click and select "Import Action" to import the `channel point redemption moderation.sb` file.
+1. **Import the Action**: Open Streamer.bot and select "Import" to import the `channel point redemption moderation.sb` file.
+
+* Just drag and drop the file into the import field, and click Import.
 
 2. **Configure Arguments**:
 
